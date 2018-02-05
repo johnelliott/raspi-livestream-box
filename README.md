@@ -4,8 +4,6 @@ Turn your Raspberry Pi with soundcard into a livestream box
 ## logging via journalctl
 - `journalctl -x -e --unit picast.service`
 - `systemctl status picast.service`
-## remote logging
-- `ssh  'journalctl -u nginx.service -o cat --no-pager -f --no-tail' |goaccess -`
 
 ## hardware setup
 - get a raspberry pi with a soundcard
