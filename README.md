@@ -1,7 +1,7 @@
 # raspi livestream box
 Turn your Raspberry Pi with soundcard into a livestream box
 
-## logging the www and etl linux systemd services on the pi
+## logging via journalctl
 - `journalctl -x -e --unit picast.service`
 - `systemctl status picast.service`
 ## remote logging
