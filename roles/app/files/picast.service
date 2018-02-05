@@ -1,0 +1,16 @@
+[Unit]
+Description=usb soundcard live stream
+RequiresMountsFor=/dev/soundcard
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+WorkingDirectory=/usr/local/lib
+Type=simple
+ExecStart=/bin/bash -c "/usr/local/bin/stream.sh"
+ExecStop=/bin/echo stopping
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

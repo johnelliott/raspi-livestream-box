@@ -1,0 +1,6 @@
+*.wav
+*.mp3
+*.retry
+inventory.ini
+ansible.cfg
+wpa_supplicant.conf

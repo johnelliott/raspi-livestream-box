@@ -1,0 +1,58 @@
+---
+- name: install apt packages
+  become: true
+  apt: pkg={{ item }} update_cache=yes cache_valid_time=3600 state=present
+  with_items:
+    - lame
+    - ezstream
+
+- name: create systemd journal dir
+  file: path=/var/log/journal state=directory mode=775 group=systemd-journal
+  become: true
+
+- name: add user to systemd-journal group
+  user:
+    name: "{{ user }}"
+    groups: systemd-journal
+    append: true
+  become: true
+
+- name: soundcard udev rule
+  become: yes
+  template:
+    src: 95-soundcard.rules.j2
+    dest: /etc/udev/rules.d/95-soundcard.rules
+    owner: root
+    mode: 0664
+
+- name: ezstream config
+  become: yes
+  template:
+    src: ezstream.xml.j2
+    dest: /usr/local/lib/ezstream.xml
+    owner: root
+    mode: 0644
+
+- name: ezstream script
+  become: yes
+  copy:
+    src: stream.sh
+    dest: /usr/local/bin/stream.sh
+    owner: root
+    mode: 0744
+
+- name: install service
+  become: yes
+  copy:
+    dest: /etc/systemd/system/picast.service
+    src: picast.service
+    owner: root 
+
+- name: enable service
+  become: yes
+  systemd:
+    name: picast
+    enabled: yes
+    state: started
+    daemon_reload: yes
+  notify: restart service

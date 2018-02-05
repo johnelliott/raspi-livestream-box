@@ -1,0 +1,17 @@
+---
+# install basic dev stuff
+- name: install apt packages
+  become: true
+  apt: pkg={{ item }} update_cache=yes cache_valid_time=3600 state=present
+  with_items:
+    - build-essential
+    - libssl-dev
+    - avahi-daemon
+    - vim
+    - tmux
+    - rsync
+
+- name: download .vimrc
+  get_url:
+    url: https://raw.githubusercontent.com/johnelliott/dotfiles/master/.vimrc.min
+    dest: ~/.vimrc
