@@ -36,8 +36,8 @@ mypinhostname
 [streamers:vars]
 stream_url=http://example.com:8000/mystream
 stream_password=hackme
-soundcard_vendor_id=1ab2
-soundcard_product_id=0001
+soundcard_vendor_id="1ab2"
+soundcard_product_id="0001"
 ```
 ### wpa_supplicant.conf example
 located in `this_project_directory/roles/wifi/files/wpa_supplicant.conf`
