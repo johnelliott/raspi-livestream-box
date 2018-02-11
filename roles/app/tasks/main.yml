@@ -17,6 +17,13 @@
     append: true
   become: true
 
+- name: asound.state
+  become: yes
+  copy:
+    dest: /var/lib/alsa/asound.state
+    src: asound.state
+    owner: root
+
 - name: soundcard udev rule
   become: yes
   template:

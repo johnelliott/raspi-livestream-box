@@ -1,7 +1,7 @@
 [Unit]
 Description=usb soundcard live stream
-RequiresMountsFor=/dev/soundcard
-Wants=network-online.target
+ConditionPathExists=/dev/soundcard
+BindsTo=network-online.target
 After=network-online.target
 
 [Service]
