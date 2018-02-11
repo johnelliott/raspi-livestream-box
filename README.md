@@ -1,5 +1,5 @@
 # raspi livestream box
-Turn your Raspberry Pi into headless a  audio source for [Icecast](http://icecast.org) internet radio.
+Turn your Raspberry Pi into headless audio source for [Icecast](http://icecast.org) internet radio.
 
 To see how it works, [start here](https://github.com/johnelliott/raspi-livestream-box/blob/master/roles/app/tasks/main.yml).
 
