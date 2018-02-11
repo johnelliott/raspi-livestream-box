@@ -1,8 +1,10 @@
 # raspi livestream box
-Turn your Raspberry Pi with soundcard into a livestream box
+Turn your Raspberry Pi into headless a  audio source for [Icecast](http://icecast.org) internet radio.
+
+To see how it works, [start here](https://github.com/johnelliott/raspi-livestream-box/blob/master/roles/app/tasks/main.yml).
 
 ## logging via journalctl
-- `journalctl -x -e --unit picast.service`
+- `journalctl -x -b --unit picast.service`
 - `systemctl status picast.service`
 
 ## hardware setup
