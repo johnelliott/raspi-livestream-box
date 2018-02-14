@@ -1,0 +1,48 @@
+---
+- name: install apt packages
+  become: true
+  apt: pkg={{ item }} update_cache=yes cache_valid_time=3600 state=present
+  with_items:
+    - git
+
+# Node.js
+- name: install nvm
+  git: repo=https://github.com/creationix/nvm.git dest=/home/{{ user }}/.nvm version={{ nvm_version }}
+- name: configure ~/.profile to source nvm
+  lineinfile:
+    dest: /home/{{ user }}/.profile
+    line: '[ -s $HOME/.nvm/nvm.sh ] && . $HOME/.nvm/nvm.sh  # This loads NVM'
+    create: yes
+
+- name: configure ~/.profile to have nvm_dir
+  lineinfile:
+    dest: /home/{{ user }}/.profile
+    insertbefore: 'NVM$'
+    line: 'export NVM_DIR="$HOME/.nvm"'
+    create: yes
+
+- name: install node
+  shell: . "$HOME/.nvm/nvm.sh" && nvm install "{{ node_version }}"
+  args:
+    executable: /bin/bash
+  # capture installed node version as ansible variable:
+  # https://github.com/leonidas/ansible-nvm/blob/master/tasks/main.yml
+  register: nvm_install_result
+  #capture installed node version as ansible variable:
+  # https://github.com/leonidas/ansible-nvm/blob/master/tasks/main.yml
+  changed_when: "'is already installed.' not in nvm_install_result.stderr"
+
+- name: check if {{ node_version }} is the current node version
+  shell: . /home/{{ user }}/.nvm/nvm.sh && nvm current
+  args:
+    executable: /bin/bash
+  # capture node version as ansible variable:
+  # https://github.com/leonidas/ansible-nvm/blob/master/tasks/main.yml
+  register: nvm_check_default
+  changed_when: node_version == nvm_check_default.stdout
+  # changed_when: False
+  ignore_errors: True
+
+- name: Set default node version to {{ node_version }} for future interactive use
+  shell: nvm alias default {{ node_version }}
+  when: nvm_check_default|failed

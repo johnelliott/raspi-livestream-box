@@ -1,0 +1,32 @@
+{
+  "name": "picast",
+  "version": "1.0.0",
+  "description": "Turn your Raspberry Pi into headless audio source for [Icecast](http://icecast.org) internet radio.",
+  "main": "server.js",
+  "scripts": {
+    "start": "DEBUG=picast:* NODE_ENV=development node_modules/nodemon/bin/nodemon.js bin/www",
+    "deploy": "ansible-playbook deploy.yml",
+    "lint": "standard",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnelliott/raspi-livestream-box.git"
+  },
+  "keywords": [],
+  "author": "John Elliott <johnelliott703@gmail.com> (http://primitivemachine.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/johnelliott/raspi-livestream-box/issues"
+  },
+  "homepage": "https://github.com/johnelliott/raspi-livestream-box#readme",
+  "dependencies": {
+    "debug": "^3.1.0",
+    "dotenv": "^5.0.0",
+    "express": "^4.16.2",
+    "morgan": "^1.9.0",
+    "multer": "^1.3.0",
+    "nodemon": "^1.14.12",
+    "pug": "^2.0.0-rc.4"
+  }
+}

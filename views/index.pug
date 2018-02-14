@@ -1,0 +1,8 @@
+extends html.pug
+block header
+  script(type='text/javascript').
+    window.initialState = !{JSON.stringify(state)}
+    document.addEventListener('touchstart', () => true)
+block content
+  !=chooRenderedString
+  script(async src='/bundle.min.js')

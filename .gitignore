@@ -1,6 +1,10 @@
-*.wav
-*.mp3
+*.conf
+*.ini
+*.log
 *.retry
-inventory.ini
+.editorconfig
+.env
+.npmrc
+.nvmrc
 ansible.cfg
-wpa_supplicant.conf
+node_modules

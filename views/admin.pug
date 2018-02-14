@@ -1,0 +1,14 @@
+extends html.pug
+block content
+  body
+    h1 picast
+    h2 📡 wifi zone 📡
+    p Enter the network you want to set
+    <form id="form" class="admin" action="/admin" method="post" enctype="multipart/form-data">
+      <label for="ssid" type="text">SSID</label>
+      <input id="ssid" type="text" name="ssid" >
+      <label for="psk" type="text">wifi password</label>
+      <input id="psk" type="text" name="psk" >
+      <input type="submit" value="set">
+    </form>
+    h3 ⚡️

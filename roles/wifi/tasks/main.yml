@@ -1,5 +1,105 @@
 ---
+# Tasks for installing access point to image hubs
+
+- name: install apt packages
+  become: true
+  apt: pkg={{ item }} update_cache=yes cache_valid_time=3600 state=present
+  with_items:
+    - hostapd
+    - dnsmasq
 
 - name: wpa_supplicant
   become: yes
-  copy: src=wpa_supplicant.conf dest=/etc/wpa_supplicant/wpa_supplicant.conf
+  copy: src=wpa_supplicant.conf dest=/etc/wpa_supplicant/wpa_supplicant-wlan0.conf
+
+- name: dhcpcd config
+  become: yes
+  template:
+    src: dhcpcd.conf.j2
+    dest: /etc/dhcpcd.conf
+    owner: root
+    group: netdev
+    mode: 0664
+
+- name: dhcpcd config path
+  become: yes
+  lineinfile:
+    path: /etc/default/hostapd
+    regexp: '^DAEMON_CONF'
+    line: 'DAEMON_CONF="/etc/hostapd/hostapd.conf"'
+    state: present
+
+- name: dnsmasq config
+  become: yes
+  copy:
+    src: dnsmasq.conf
+    dest: /etc/dnsmasq.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: hostapd config
+  become: yes
+  template:
+    src: hostapd.conf.j2
+    dest: /etc/hostapd/hostapd.conf
+    owner: root
+    group: netdev
+    mode: 0664
+
+- name: ipv4 forwarding
+  become: yes
+  lineinfile:
+    path: /etc/sysctl.conf
+    insertafter: '#net.ipv4.ip_forward=1'
+    line: 'net.ipv4.ip_forward=1'
+    state: present
+
+- name: iptables config
+  become: yes
+  copy:
+    src: iptables.ipv4.nat
+    dest: /etc/iptables.ipv4.nat
+    owner: root
+    group: root
+    mode: 0644
+
+- name: iptables-restore on boot
+  become: yes
+  lineinfile:
+    path: /etc/rc.local
+    insertbefore: '^exit 0$'
+    line: 'iptables-restore < /etc/iptables.ipv4.nat'
+    state: present
+
+- name: enable dnsmasq
+  become: yes
+  systemd:
+    name: dnsmasq
+    enabled: yes
+    state: restarted
+    daemon_reload: yes
+
+- name: enable hostapd
+  become: yes
+  systemd:
+    name: hostapd
+    enabled: yes
+    state: restarted
+    daemon_reload: yes
+
+## TODO restart
+#- name: Restart server
+#  become: true
+#  command: shutdown -r now "Reboot triggered by Ansible"
+#  async: 0
+#  poll: 0
+#  ignore_errors: true
+#
+#- name: Wait for server to restart
+#  local_action:
+#    module: wait_for
+#      host={{ ansible_ssh_host }}
+#      port={{ ansible_ssh_port }}
+#      delay=1
+#      timeout=30
