@@ -18,21 +18,20 @@
 # www app server service
 - name: clone app
   git:
-    repo: ssh://git@github.com/johnelliott/picast.git
+    repo: https://github.com/johnelliott/raspi-livestream-box.git
     dest: "{{ app_path }}"
     version: "{{ app_version }}"
-    accept_hostkey: yes
-    key_file: "{{ github_key }}"
     force: true
 
 - name: copy picast environment configuration
   copy: src=picast.env dest={{ app_path }}/.env
 
 - name: build app
-  shell: . $HOME/.nvm/nvm.sh && npm install && npm run build
+  shell: . $HOME/.nvm/nvm.sh && npm install
   args:
     chdir: "{{ app_path }}"
     executable: /bin/bash
+
 - name: create systemd journal dir
   file: path=/var/log/journal state=directory mode=775 group=systemd-journal
   become: true
