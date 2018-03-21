@@ -1,4 +1,4 @@
-- name: restart service
+- name: restart www
   become: yes
   systemd:
     name: picast-www

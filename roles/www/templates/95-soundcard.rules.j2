@@ -1,1 +1,0 @@
-ACTION=="add", ATTRS{idVendor}=="{{ soundcard_vendor_id }}", ATTRS{idProduct}=="{{ soundcard_product_id }}", SYMLINK+="soundcard", TAG+="systemd", ENV{SYSTEMD_WANTS}="picast.service"
